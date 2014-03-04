@@ -18,7 +18,7 @@ public class ModCompatibilityHandler {
         EasyLog.log("[ModCompat] Loading mod compatibility modules.");
 
 //        new ModCompatEE3();
-//        new ModCompatIC2();
+        new ModCompatIC2();
 
         for (Map.Entry<String, ModCompat> entry : modules.entrySet()) {
             entry.getValue().load();

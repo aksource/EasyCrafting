@@ -1,9 +1,11 @@
 package lepko.easycrafting.modcompat;
 
+import ic2.api.item.*;
 import lepko.easycrafting.easyobjects.EasyItemStack;
 import lepko.easycrafting.easyobjects.EasyRecipe;
 import lepko.easycrafting.helpers.EasyLog;
 import lepko.easycrafting.helpers.RecipeHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class ModCompatIC2 extends ModCompat {
         }
     }
 
-/*    public static boolean isElectric(ItemStack is) {
+    public static boolean isElectric(ItemStack is) {
         if (ModCompat.isLoaded("IC2") && is.getItem() instanceof IElectricItem) {
             return true;
         }
@@ -99,5 +101,5 @@ public class ModCompatIC2 extends ModCompat {
             return 0;
         }
         return manager.discharge(is, amount, tier, ignoreTransferLimit, simulate);
-    }*/
+    }
 }
