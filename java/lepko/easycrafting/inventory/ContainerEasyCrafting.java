@@ -150,6 +150,8 @@ public class ContainerEasyCrafting extends Container {
                 AbstractPacket packet = new PacketEasyCrafting(recipe, isRightClick);
                 ModEasyCrafting.packetPipeline.sendToServer(packet);
 //                PacketHandler.sendPacket(packet);
+                //Test
+                return_stack.getItem().onCreated(return_stack, player.worldObj, player);
 
                 if (isRightClick) { // Right click; craft until max stack
                     int maxTimes = RecipeHelper.calculateCraftingMultiplierUntilMaxStack(stack_in_slot, stack_in_hand);
