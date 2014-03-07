@@ -199,6 +199,8 @@ public class PacketEasyCrafting extends AbstractPacket {
             if (!isRightClick) {
                 if (RecipeHelper.canCraft(recipe, sender.inventory, RecipeHelper.getAllRecipes(), true, 1, ConfigHandler.MAX_RECURSION) > 0) {
                     return_stack.stackSize = return_size;
+                    //Test
+                    return_stack.onCrafting(sender.worldObj, sender, 1);
                     sender.inventory.setItemStack(return_stack);
                 }
             } else {
@@ -206,6 +208,8 @@ public class PacketEasyCrafting extends AbstractPacket {
                 int timesCrafted = RecipeHelper.canCraft(recipe, sender.inventory, RecipeHelper.getAllRecipes(), true, maxTimes, ConfigHandler.MAX_RECURSION);
                 if (timesCrafted > 0) {
                     return_stack.stackSize = return_size + (timesCrafted - 1) * recipe.getResult().getSize();
+                    //Test
+                    return_stack.onCrafting(sender.worldObj, sender, timesCrafted);
                     sender.inventory.setItemStack(return_stack);
                 }
             }

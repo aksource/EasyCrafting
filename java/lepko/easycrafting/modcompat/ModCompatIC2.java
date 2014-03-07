@@ -30,7 +30,9 @@ public class ModCompatIC2 extends ModCompat {
                 if (className.equals("ic2.core.AdvRecipe") || className.equals("ic2.core.AdvShapelessRecipe")) {
                     Object[] input = (Object[]) Class.forName(className).getField("input").get(r);
                     ArrayList<Object> ingredients = new ArrayList<Object>(Arrays.asList(input));
-                    RecipeHelper.scannedRecipes.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
+                    //Test.Exception of Forge Hummer and Cable Cutter
+                    if (!ingredients.contains("craftingToolForgeHammer") && !ingredients.contains("craftingToolWireCutter"))
+                        RecipeHelper.scannedRecipes.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
                     iterator.remove();
                 }
             }
