@@ -41,6 +41,13 @@ public class EasyRecipe {
             return o;
         } else if (o instanceof ArrayList) {
             return o;
+        } else if (o.getClass().isArray()) {
+            Object o2 = ((Object[])o)[0];
+            o2 = getIngredient(o2);
+            if(o2 instanceof EasyItemStack) {
+                ingredients.set(index, o2);
+            }
+            return o2;
         } else if (o instanceof ItemStack) {
             EasyItemStack eis = EasyItemStack.fromItemStack((ItemStack) o);
             ingredients.set(index, eis);
@@ -49,6 +56,19 @@ public class EasyRecipe {
             ArrayList<ItemStack> list = RecipeHelper.resolveOreAndLiquidDictionaries((String) o);
             ingredients.set(index, list);
             return list;
+        }
+        return null;
+    }
+
+    public Object getIngredient(Object o) {
+        if (o instanceof EasyItemStack) {
+            return o;
+        } else if (o instanceof ArrayList) {
+            return o;
+        } else if (o instanceof ItemStack) {
+            return EasyItemStack.fromItemStack((ItemStack) o);
+        } else if (o instanceof String) {
+            return RecipeHelper.resolveOreAndLiquidDictionaries((String) o);
         }
         return null;
     }
