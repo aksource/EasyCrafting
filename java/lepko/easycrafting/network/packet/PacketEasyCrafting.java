@@ -132,8 +132,7 @@ public class PacketEasyCrafting extends AbstractPacket {
     public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
         buffer.writeBoolean(isRightClick);
 
-//        ByteBufUtils.writeUTF8String(buffer, result.getID());
-        buffer.writeInt(result.getID());
+        ByteBufUtils.writeUTF8String(buffer, result.getID());
         buffer.writeInt(result.getDamage());
         buffer.writeByte(result.getSize());
 
@@ -151,8 +150,7 @@ public class PacketEasyCrafting extends AbstractPacket {
     public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
         isRightClick = buffer.readBoolean();
 
-//        String id = ByteBufUtils.readUTF8String(buffer);
-        int id = buffer.readInt();
+        String id = ByteBufUtils.readUTF8String(buffer);
         int damage = buffer.readInt();
         int size = buffer.readByte();
 

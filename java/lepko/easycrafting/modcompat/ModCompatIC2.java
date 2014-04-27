@@ -5,6 +5,7 @@ import lepko.easycrafting.easyobjects.EasyItemStack;
 import lepko.easycrafting.easyobjects.EasyRecipe;
 import lepko.easycrafting.helpers.EasyLog;
 import lepko.easycrafting.helpers.RecipeHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
@@ -43,8 +44,15 @@ public class ModCompatIC2 extends ModCompat {
         }
     }
 
-    public static boolean isElectric(ItemStack is) {
+    public static boolean isElectricItemStack(ItemStack is) {
         if (ModCompat.isLoaded("IC2") && is.getItem() instanceof IElectricItem) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isElectricItem(Item is) {
+        if (ModCompat.isLoaded("IC2") && is instanceof IElectricItem) {
             return true;
         }
         return false;
@@ -68,7 +76,7 @@ public class ModCompatIC2 extends ModCompat {
     }
 
     public static int charge(ItemStack is, int amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
-        if (!isElectric(is)) {
+        if (!isElectricItemStack(is)) {
             return 0;
         }
 
@@ -87,7 +95,7 @@ public class ModCompatIC2 extends ModCompat {
     }
 
     public static int discharge(ItemStack is, int amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
-        if (!isElectric(is)) {
+        if (!isElectricItemStack(is)) {
             return 0;
         }
 

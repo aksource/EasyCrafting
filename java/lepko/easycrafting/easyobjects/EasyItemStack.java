@@ -14,32 +14,32 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class EasyItemStack {
 
-    private int id;
+    private String id;
     private int damage;
     private int size;
     private int charge;
     private NBTTagCompound stackTagCompound;
 
-    public EasyItemStack(int id, int damage, int size, int charge) {
+    public EasyItemStack(String id, int damage, int size, int charge) {
         this.id = id;
         this.damage = damage;
         this.size = size;
         this.charge = charge;
     }
 
-    public EasyItemStack(int id, int damage, int size) {
+    public EasyItemStack(String id, int damage, int size) {
         this(id, damage, size, 0);
     }
 
-    public EasyItemStack(int id, int damage) {
+    public EasyItemStack(String id, int damage) {
         this(id, damage, 1, 0);
     }
 
-    public EasyItemStack(int id) {
+    public EasyItemStack(String id) {
         this(id, 0, 1, 0);
     }
 
-    public int getID() {
+    public String getID() {
         return id;
     }
 
@@ -58,7 +58,7 @@ public class EasyItemStack {
     public int getInternalID() { return Item.getIdFromItem(toItemStack().getItem());}
 
     public ItemStack toItemStack() {
-        ItemStack is = new ItemStack(Item.getItemById(id)/*getItemFromUniqueString(id)*/, size, damage);
+        ItemStack is = new ItemStack(getItemFromUniqueString(id), size, damage);
         is.setTagCompound(stackTagCompound);
         if (charge > 0) {
             ModCompatIC2.discharge(is, 0x7fffffff, 0x7fffffff, true, false);
@@ -67,13 +67,13 @@ public class EasyItemStack {
         return is;
     }
     public static ItemStack toItemStack(EasyItemStack eis) {
-        ItemStack is = new ItemStack(Item.getItemById(eis.id)/*getItemFromUniqueString(eis.id)*/, eis.size, eis.damage);
+        ItemStack is = new ItemStack(getItemFromUniqueString(eis.id), eis.size, eis.damage);
         is.setTagCompound(eis.stackTagCompound);
         return is;
     }
     public static EasyItemStack fromItemStack(ItemStack is) {
         int charge = ModCompatIC2.discharge(is, 0x7fffffff, 0x7fffffff, true, true);
-        EasyItemStack eis = new EasyItemStack(Item.getIdFromItem(is.getItem())/*getUniqueStrings(is.getItem())*/, is.getItemDamage(), is.stackSize, charge);
+        EasyItemStack eis = new EasyItemStack(getUniqueStrings(is.getItem()), is.getItemDamage(), is.stackSize, charge);
         eis.stackTagCompound = is.getTagCompound();
         return eis;
     }
@@ -115,10 +115,10 @@ public class EasyItemStack {
             return false;
         }
         EasyItemStack other = (EasyItemStack) obj;
-        if (id != other.id/*!id.equals(other.id)*/) {
+        if (!id.equals(other.id)) {
             return false;
         }
-        if (damage != other.damage && damage != OreDictionary.WILDCARD_VALUE && other.damage != OreDictionary.WILDCARD_VALUE/* && !(getItemFromUniqueString(id) instanceof IElectricItem)*/) {
+        if (damage != other.damage && damage != OreDictionary.WILDCARD_VALUE && other.damage != OreDictionary.WILDCARD_VALUE && !ModCompatIC2.isElectricItem(getItemFromUniqueString(id))) {
             return false;
         }
         if (!ignoreSize && size != other.size) {
@@ -135,10 +135,10 @@ public class EasyItemStack {
         if (is == null) {
             return false;
         }
-        if (id != Item.getIdFromItem(is.getItem())/*!id.equals(getUniqueStrings(is.getItem()))*/) {
+        if (!id.equals(getUniqueStrings(is.getItem()))) {
             return false;
         }
-        if (damage != is.getItemDamage() && damage != OreDictionary.WILDCARD_VALUE && is.getItemDamage() != OreDictionary.WILDCARD_VALUE && is.getHasSubtypes()/* && !(getItemFromUniqueString(id) instanceof IElectricItem)*/) {
+        if (damage != is.getItemDamage() && damage != OreDictionary.WILDCARD_VALUE && is.getItemDamage() != OreDictionary.WILDCARD_VALUE && is.getHasSubtypes() && !ModCompatIC2.isElectricItem(getItemFromUniqueString(id))) {
             return false;
         }
         if (!ignoreSize && size != is.stackSize) {
@@ -172,7 +172,7 @@ public class EasyItemStack {
         }else {
             uId = GameRegistry.findUniqueIdentifierFor((Item) obj);
         }
-        return uId.modId + ":" + uId.name;
+        return uId.toString();
 
     }
     public static Item getItemFromUniqueString(String str) {
