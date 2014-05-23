@@ -23,9 +23,12 @@ public class ModCompatEE3 extends ModCompat {
             while (iterator.hasNext()) {
                 IRecipe r = iterator.next();
                 ArrayList<Object> ingredients = RecipeHelper.getIngredientList(r);
-                if (ingredients != null) {
+                if (RecipeHelper.registeredRecipes.contains(r)) {
+                    iterator.remove();
+                } else if (ingredients != null) {
                     for (Object o : ingredients) {
                         if (o instanceof ItemStack && isTransmutationStone((ItemStack) o)) {
+                            RecipeHelper.registeredRecipes.add(r);
                             iterator.remove();
                         }
                     }
@@ -34,7 +37,6 @@ public class ModCompatEE3 extends ModCompat {
             //
         } catch (Exception e) {
             EasyLog.warning("[ModCompat] [" + modID + "] Exception while scanning recipes.", e);
-            return;
         }
     }
 

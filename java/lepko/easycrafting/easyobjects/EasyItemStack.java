@@ -55,7 +55,7 @@ public class EasyItemStack {
         return charge;
     }
 
-    public int getInternalID() { return Item.getIdFromItem(toItemStack().getItem());}
+    public int getInternalID() { return Item.getIdFromItem(getItemFromUniqueString(id));}
 
     public ItemStack toItemStack() {
         ItemStack is = new ItemStack(getItemFromUniqueString(id), size, damage);
@@ -79,19 +79,7 @@ public class EasyItemStack {
     }
 
     public static boolean areStackTagsEqual(EasyItemStack is0, ItemStack is1) {
-        if (is0 == null && is1 == null) {
-            return true;
-        } else {
-            if (is0 != null && is1 != null) {
-                if (is0.stackTagCompound == null && is1.stackTagCompound != null) {
-                    return false;
-                } else {
-                    return is0.stackTagCompound == null || is0.stackTagCompound.equals(is1.stackTagCompound);
-                }
-            } else {
-                return false;
-            }
-        }
+        return (is0 == null && is1 == null) || (is0 != null && is1 != null && (is0.stackTagCompound != null || is1.stackTagCompound == null) && (is0.stackTagCompound == null || is0.stackTagCompound.equals(is1.stackTagCompound)));
     }
 
     @Override
@@ -115,16 +103,7 @@ public class EasyItemStack {
             return false;
         }
         EasyItemStack other = (EasyItemStack) obj;
-        if (!id.equals(other.id)) {
-            return false;
-        }
-        if (damage != other.damage && damage != OreDictionary.WILDCARD_VALUE && other.damage != OreDictionary.WILDCARD_VALUE && !ModCompatIC2.isElectricItem(getItemFromUniqueString(id))) {
-            return false;
-        }
-        if (!ignoreSize && size != other.size) {
-            return false;
-        }
-        return true;
+        return id.equals(other.id) && (damage == other.damage || damage == OreDictionary.WILDCARD_VALUE || other.damage == OreDictionary.WILDCARD_VALUE || ModCompatIC2.isElectricItem(getItemFromUniqueString(id))) &&(ignoreSize || size == other.size);
     }
 
     public boolean equalsItemStack(ItemStack is) {
@@ -132,19 +111,7 @@ public class EasyItemStack {
     }
 
     public boolean equalsItemStack(ItemStack is, boolean ignoreSize) {
-        if (is == null) {
-            return false;
-        }
-        if (!id.equals(getUniqueStrings(is.getItem()))) {
-            return false;
-        }
-        if (damage != is.getItemDamage() && damage != OreDictionary.WILDCARD_VALUE && is.getItemDamage() != OreDictionary.WILDCARD_VALUE && is.getHasSubtypes() && !ModCompatIC2.isElectricItem(getItemFromUniqueString(id))) {
-            return false;
-        }
-        if (!ignoreSize && size != is.stackSize) {
-            return false;
-        }
-        return true;
+        return is != null && id.equals(getUniqueStrings(is.getItem())) && (damage == is.getItemDamage() || damage == OreDictionary.WILDCARD_VALUE || is.getItemDamage() == OreDictionary.WILDCARD_VALUE || !is.getHasSubtypes() || ModCompatIC2.isElectricItem(getItemFromUniqueString(id))) && (ignoreSize || size == is.stackSize );
     }
 
     // TODO: separate charge and usedIngredient methods
@@ -152,8 +119,7 @@ public class EasyItemStack {
         int outputCharge = 0;
 
         if (usedIngredients != null) {
-            for (int i = 0; i < usedIngredients.size(); i++) {
-                ItemStack ingredient = usedIngredients.get(i);
+            for (ItemStack ingredient :  usedIngredients) {
                 outputCharge += ModCompatIC2.discharge(ingredient, 0x7fffffff, 0x7fffffff, true, true);
             }
         }
@@ -172,16 +138,16 @@ public class EasyItemStack {
         }else {
             uId = GameRegistry.findUniqueIdentifierFor((Item) obj);
         }
-        return uId.toString();
+        return (uId == null) ? "" : uId.toString();
 
     }
     public static Item getItemFromUniqueString(String str) {
+        if (str.equals("")) return null;
         String modId;
         String modName;
-        String[] sprit = str.split(":");
-        modId = sprit[0];
-        modName = sprit[1];
-        Item item = GameRegistry.findItem(modId, modName);
-        return item;
+        String[] split = str.split(":");
+        modId = split[0];
+        modName = split[1];
+        return GameRegistry.findItem(modId, modName);
     }
 }

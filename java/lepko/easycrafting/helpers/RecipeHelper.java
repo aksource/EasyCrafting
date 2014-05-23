@@ -26,40 +26,39 @@ public class RecipeHelper {
 
     private static int lastRecipeListSize = 0;
     public static List<EasyRecipe> scannedRecipes = new ArrayList<EasyRecipe>();
+    public static List<IRecipe> registeredRecipes = new ArrayList<IRecipe>();
 
     public static void checkForNewRecipes() {
         @SuppressWarnings("unchecked")
         List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-
-        if (lastRecipeListSize < recipes.size()) {
-            List<IRecipe> newRecipes = new ArrayList<IRecipe>();
-            for (int i = lastRecipeListSize; i < recipes.size(); i++) {
-                newRecipes.add(recipes.get(i));
-            }
-            lastRecipeListSize = recipes.size();
-            scanRecipes(newRecipes);
-        }
+//        EasyLog.log(String.format("All IRecipes : %s", recipes.size()));
+        scanRecipes(recipes);
+//        if (lastRecipeListSize < recipes.size()) {
+//            List<IRecipe> newRecipes = new ArrayList<IRecipe>();
+//            for (int i = lastRecipeListSize; i < recipes.size(); i++) {
+//                newRecipes.add(recipes.get(i));
+//            }
+//            lastRecipeListSize = recipes.size();
+//            scanRecipes(newRecipes);
+//        }
     }
 
     public static void scanRecipes(List<IRecipe> recipes) {
         long beforeTime = System.nanoTime();
         int size = recipes.size();
-        //
-
         ModCompatibilityHandler.scanRecipes(recipes);
 
         ArrayList<EasyRecipe> tmp = new ArrayList<EasyRecipe>();
 
         for (IRecipe r : recipes) {
+            if (registeredRecipes.contains(r)) continue;
             ArrayList<Object> ingredients = RecipeHelper.getIngredientList(r);
             if (ingredients != null && r.getRecipeOutput() != null) {
-//                if (Item.itemsList[r.getRecipeOutput().itemID] != null) {
-                    tmp.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
-//                } else {
-//                    EasyLog.warning("Invalid Recipe Output for " + r.getClass().getName() + ". Item with ID " + r.getRecipeOutput().itemID + " is null!");
-//                }
+//                EasyLog.log(String.format("OUT:%s IN:%s", r.getRecipeOutput().toString(), ingredients.toString()));
+                RecipeHelper.registeredRecipes.add(r);
+                tmp.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
             } else {
-                EasyLog.log("Unknown Recipe: " + r.getClass().getName());
+                EasyLog.log(String.format("Unknown Recipe: %s", r.getClass().getName()));
             }
         }
 

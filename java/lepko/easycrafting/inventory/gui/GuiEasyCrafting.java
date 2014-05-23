@@ -293,14 +293,17 @@ public class GuiEasyCrafting extends GuiContainer {
             ArrayList<EasyRecipe> list = new ArrayList<EasyRecipe>();
             lastSearch = searchField.getText().toLowerCase();
 
-            recipeLoop: for (int i = 0; i < all.size(); i++) {
-                EasyRecipe r = all.get(i);
-                List<String> itemProps = r.getResult().toItemStack().getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
-                for (int j = 0; j < itemProps.size(); j++) {
-                    if (itemProps.get(j).toLowerCase().contains(lastSearch)) {
-                        list.add(r);
-                        continue recipeLoop;
+            recipeLoop: for (EasyRecipe r : all) {
+                try {
+                    List<String> itemProps = r.getResult().toItemStack().getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
+                    for (String string : itemProps) {
+                        if (string.toLowerCase().contains(lastSearch)) {
+                            list.add(r);
+                            continue recipeLoop;
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

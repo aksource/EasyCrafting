@@ -13,9 +13,7 @@ import lepko.easycrafting.helpers.RecipeHelper;
 import net.minecraft.item.crafting.IRecipe;
 
 public class ModCompatMekanism extends ModCompat {
-	
-	private Class mekanismRecipe = null;
-	private Method getInput = null;
+
     public ModCompatMekanism() {
         super("Mekanism");
     }
@@ -23,18 +21,22 @@ public class ModCompatMekanism extends ModCompat {
     @Override
     public void scanRecipes(List<IRecipe> recipes) {
         try {
-            //
+            Class mekanismRecipe;
+            Method getInput;
             Iterator<IRecipe> iterator = recipes.iterator();
             while (iterator.hasNext()) {
                 IRecipe r = iterator.next();
                 String className = r.getClass().getName();
-                if (className.equals("mekanism.common.recipe.MekanismRecipe")) {
+                if (RecipeHelper.registeredRecipes.contains(r)) {
+                    iterator.remove();
+                } else if (className.equals("mekanism.common.recipe.MekanismRecipe")) {
                 	mekanismRecipe = Class.forName(className);
                 	getInput = mekanismRecipe.getMethod("getInput", (Class[])null);
 //                    Object[] input = (Object[]) Class.forName(className).getField("input").get(r);
                 	Object[] input = (Object[]) getInput.invoke(r, (Object[])null);
                     ArrayList<Object> ingredients = new ArrayList<Object>(Arrays.asList(input));
                     RecipeHelper.scannedRecipes.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
+                    RecipeHelper.registeredRecipes.add(r);
                     iterator.remove();
                 }
             }

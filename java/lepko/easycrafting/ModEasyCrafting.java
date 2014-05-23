@@ -76,7 +76,7 @@ public class ModEasyCrafting {
             }
         }
         GameRegistry.addShapelessRecipe(new ItemStack(blockEasyCraftingTable, 1), array);
-        this.proxy.onLoad();
+        proxy.onLoad();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         MinecraftForge.EVENT_BUS.register(new EventHandler());
