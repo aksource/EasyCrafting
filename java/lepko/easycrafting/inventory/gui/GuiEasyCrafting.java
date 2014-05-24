@@ -224,8 +224,12 @@ public class GuiEasyCrafting extends GuiContainer {
         if (isScrolling) {
             setScrollPosition((mouseY - top - 7.5F) / (bottom - top - 15.0F));
         }
-
-        super.drawScreen(mouseX, mouseY, par3);
+        //todo これでエラー落ちしないけど、全然良くない
+        try {
+            super.drawScreen(mouseX, mouseY, par3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Handle tab hover text
         for (int i = 0; i < tabDescriptions.length; i++) {
@@ -338,11 +342,7 @@ public class GuiEasyCrafting extends GuiContainer {
     private void updateSlotBackgroundCache() {
         canCraftCache = new boolean[renderList.size()];
         for (int i = 0; i < renderList.size(); i++) {
-            if (craftableList.contains(renderList.get(i))) {
-                canCraftCache[i] = true;
-            } else {
-                canCraftCache[i] = false;
-            }
+            canCraftCache[i] = craftableList.contains(renderList.get(i));
         }
     }
 

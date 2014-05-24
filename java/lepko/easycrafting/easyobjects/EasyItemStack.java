@@ -58,6 +58,7 @@ public class EasyItemStack {
     public int getInternalID() { return Item.getIdFromItem(getItemFromUniqueString(id));}
 
     public ItemStack toItemStack() {
+        if (getItemFromUniqueString(id) == null) return null;
         ItemStack is = new ItemStack(getItemFromUniqueString(id), size, damage);
         is.setTagCompound(stackTagCompound);
         if (charge > 0) {
@@ -67,6 +68,7 @@ public class EasyItemStack {
         return is;
     }
     public static ItemStack toItemStack(EasyItemStack eis) {
+        if (getItemFromUniqueString(eis.id) == null) return null;
         ItemStack is = new ItemStack(getItemFromUniqueString(eis.id), eis.size, eis.damage);
         is.setTagCompound(eis.stackTagCompound);
         return is;

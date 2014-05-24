@@ -27,9 +27,7 @@ public class ModCompatMekanism extends ModCompat {
             while (iterator.hasNext()) {
                 IRecipe r = iterator.next();
                 String className = r.getClass().getName();
-                if (RecipeHelper.registeredRecipes.contains(r)) {
-                    iterator.remove();
-                } else if (className.equals("mekanism.common.recipe.MekanismRecipe")) {
+                if (className.equals("mekanism.common.recipe.MekanismRecipe")) {
                 	mekanismRecipe = Class.forName(className);
                 	getInput = mekanismRecipe.getMethod("getInput", (Class[])null);
 //                    Object[] input = (Object[]) Class.forName(className).getField("input").get(r);

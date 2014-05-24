@@ -29,9 +29,12 @@ public class RecipeHelper {
     public static List<IRecipe> registeredRecipes = new ArrayList<IRecipe>();
 
     public static void checkForNewRecipes() {
-        @SuppressWarnings("unchecked")
-        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+        List<IRecipe> recipes = new ArrayList<IRecipe>();
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+        List<IRecipe> allRecipes = (ArrayList<IRecipe>)CraftingManager.getInstance().getRecipeList();
+        recipes.addAll(allRecipes);
 //        EasyLog.log(String.format("All IRecipes : %s", recipes.size()));
+        recipes.removeAll(registeredRecipes);
         scanRecipes(recipes);
 //        if (lastRecipeListSize < recipes.size()) {
 //            List<IRecipe> newRecipes = new ArrayList<IRecipe>();
@@ -51,10 +54,9 @@ public class RecipeHelper {
         ArrayList<EasyRecipe> tmp = new ArrayList<EasyRecipe>();
 
         for (IRecipe r : recipes) {
-            if (registeredRecipes.contains(r)) continue;
             ArrayList<Object> ingredients = RecipeHelper.getIngredientList(r);
-            if (ingredients != null && r.getRecipeOutput() != null) {
-//                EasyLog.log(String.format("OUT:%s IN:%s", r.getRecipeOutput().toString(), ingredients.toString()));
+            if (checkValidInOut(ingredients, r.getRecipeOutput())) {
+                EasyLog.log(String.format("OUT:%s nbt: %b, IN:%s", r.getRecipeOutput().toString(), r.getRecipeOutput().hasTagCompound(), ingredients.toString()));
                 RecipeHelper.registeredRecipes.add(r);
                 tmp.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
             } else {
@@ -67,6 +69,10 @@ public class RecipeHelper {
 
         //
         EasyLog.log(String.format("Scanned %d new recipes in %.8f seconds", size, (System.nanoTime() - beforeTime) / 1000000000.0D));
+    }
+    //null check
+    private static boolean checkValidInOut(ArrayList<Object> ingredients, ItemStack output) {
+        return ingredients != null && output != null && (ingredients.size() > 1 || (ingredients.get(0) instanceof ItemStack && !output.isItemEqual((ItemStack)ingredients.get(0))));
     }
 
     /**
@@ -180,14 +186,16 @@ public class RecipeHelper {
                         for (EasyRecipe er : list) {
                             if (canCraft(er, tmp, recipesToCheck, true, 1, recursion - 1) > 0) {
                                 ItemStack is = er.getResult().toItemStack();
-                                is.stackSize--;
-                                if (is.stackSize > 0 && !tmp.addItemStackToInventory(is)) {
-                                    break timesLoop;
+                                if (is != null) {
+                                    is.stackSize--;
+                                    if (is.stackSize > 0 && !tmp.addItemStackToInventory(is)) {
+                                        break timesLoop;
+                                    }
+                                    ItemStack usedItemStack = is.copy();
+                                    usedItemStack.stackSize = 1;
+                                    usedIngredients.add(usedItemStack);
+                                    continue iiLoop;
                                 }
-                                ItemStack usedItemStack = is.copy();
-                                usedItemStack.stackSize = 1;
-                                usedIngredients.add(usedItemStack);
-                                continue iiLoop;
                             }
                         }
                     }

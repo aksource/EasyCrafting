@@ -23,9 +23,7 @@ public class ModCompatEE3 extends ModCompat {
             while (iterator.hasNext()) {
                 IRecipe r = iterator.next();
                 ArrayList<Object> ingredients = RecipeHelper.getIngredientList(r);
-                if (RecipeHelper.registeredRecipes.contains(r)) {
-                    iterator.remove();
-                } else if (ingredients != null) {
+                if (ingredients != null) {
                     for (Object o : ingredients) {
                         if (o instanceof ItemStack && isTransmutationStone((ItemStack) o)) {
                             RecipeHelper.registeredRecipes.add(r);

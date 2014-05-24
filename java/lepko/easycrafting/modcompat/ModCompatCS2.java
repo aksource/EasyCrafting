@@ -27,9 +27,7 @@ public class ModCompatCS2 extends ModCompat {
             while (iterator.hasNext()) {
                 IRecipe r = iterator.next();
                 String className = r.getClass().getName();
-                if (RecipeHelper.registeredRecipes.contains(r)) {
-                    iterator.remove();
-                } else if (className.equals("cubex2.cs2.item.crafting.CSShapedRecipe")) {
+                if (className.equals("cubex2.cs2.item.crafting.CSShapedRecipe")) {
                 	customStuffRecipe = Class.forName(className);
                 	getInput = customStuffRecipe.getMethod("getInput", (Class[])null);
 //                    Object[] input = (Object[]) Class.forName(className).getField("input").get(r);
