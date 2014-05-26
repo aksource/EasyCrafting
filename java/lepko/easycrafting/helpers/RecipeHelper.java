@@ -56,7 +56,7 @@ public class RecipeHelper {
         for (IRecipe r : recipes) {
             ArrayList<Object> ingredients = RecipeHelper.getIngredientList(r);
             if (checkValidInOut(ingredients, r.getRecipeOutput())) {
-                EasyLog.log(String.format("OUT:%s nbt: %b, IN:%s", r.getRecipeOutput().toString(), r.getRecipeOutput().hasTagCompound(), ingredients.toString()));
+//                EasyLog.log(String.format("OUT:%s nbt: %b, IN:%s", r.getRecipeOutput().toString(), r.getRecipeOutput().hasTagCompound(), ingredients.toString()));
                 RecipeHelper.registeredRecipes.add(r);
                 tmp.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
             } else {
