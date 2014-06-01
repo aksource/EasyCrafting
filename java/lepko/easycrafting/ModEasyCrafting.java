@@ -20,7 +20,7 @@ import lepko.easycrafting.handlers.TickHandlerClient;
 import lepko.easycrafting.helpers.EasyLog;
 import lepko.easycrafting.helpers.RecipeHelper;
 import lepko.easycrafting.helpers.VersionHelper;
-import lepko.easycrafting.network.PacketPipeline;
+import lepko.easycrafting.network.PacketHandler;
 import lepko.easycrafting.proxy.Proxy;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -31,7 +31,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 //@Mod(modid = VersionHelper.MOD_ID, name = VersionHelper.MOD_NAME, version = VersionHelper.VERSION, dependencies = "required-after:FML")
-@Mod(modid = "EasyCrafting", name = "Easy Crafting", version = "@MOD_VERSION@", dependencies = "required-after:Forge@[10.12.1.1060,)", useMetadata = true)
+@Mod(modid = "EasyCrafting", name = "Easy Crafting", version = "@MOD_VERSION@", dependencies = "required-after:Forge@[10.12.1.1090,)", useMetadata = true)
 public class ModEasyCrafting {
 
     @Mod.Instance("EasyCrafting")
@@ -41,8 +41,6 @@ public class ModEasyCrafting {
     // Blocks
     public static Block blockEasyCraftingTable;
 
-    public static final PacketPipeline packetPipeline = new PacketPipeline();
-
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         EasyLog.log("Loading " + VersionHelper.MOD_NAME + " version " + VersionHelper.VERSION + ".");
@@ -50,6 +48,8 @@ public class ModEasyCrafting {
         VersionHelper.performCheck();
         blockEasyCraftingTable = new BlockEasyCraftingTable(/*ConfigHandler.EASYCRAFTINGTABLE_ID*/);
         GameRegistry.registerBlock(blockEasyCraftingTable, "blockEasyCraftingTable");
+
+        PacketHandler.init();
     }
 
     @Mod.EventHandler
@@ -81,7 +81,6 @@ public class ModEasyCrafting {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         MinecraftForge.EVENT_BUS.register(new EventHandler());
         FMLCommonHandler.instance().bus().register(new TickHandlerClient());
-        packetPipeline.initialise();
     }
 
     @Mod.EventHandler
@@ -93,6 +92,5 @@ public class ModEasyCrafting {
     public void postInit(FMLPostInitializationEvent event) {
         ModCompatibilityHandler.load();
         RecipeHelper.checkForNewRecipes();
-        packetPipeline.postInitialise();
     }
 }

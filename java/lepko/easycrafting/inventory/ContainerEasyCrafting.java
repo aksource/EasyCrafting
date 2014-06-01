@@ -10,9 +10,8 @@ import lepko.easycrafting.config.ConfigHandler;
 import lepko.easycrafting.easyobjects.EasyRecipe;
 import lepko.easycrafting.helpers.RecipeHelper;
 import lepko.easycrafting.inventory.gui.GuiEasyCrafting;
-import lepko.easycrafting.network.packet.AbstractPacket;
-import lepko.easycrafting.network.packet.PacketEasyCrafting;
-import lepko.easycrafting.proxy.Proxy;
+import lepko.easycrafting.network.PacketHandler;
+import lepko.easycrafting.network.packet.MessageEasyCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -147,8 +146,7 @@ public class ContainerEasyCrafting extends Container {
             if (recipe != null) {
                 boolean isRightClick = mouse_button != 0;
 
-                AbstractPacket packet = new PacketEasyCrafting(recipe, isRightClick);
-                ModEasyCrafting.packetPipeline.sendToServer(packet);
+                PacketHandler.INSTANCE.sendToServer(new MessageEasyCrafting(recipe, isRightClick));
 
                 if (isRightClick) { // Right click; craft until max stack
                     int maxTimes = RecipeHelper.calculateCraftingMultiplierUntilMaxStack(stack_in_slot, stack_in_hand);
