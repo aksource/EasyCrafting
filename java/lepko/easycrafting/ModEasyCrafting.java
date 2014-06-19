@@ -31,7 +31,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 //@Mod(modid = VersionHelper.MOD_ID, name = VersionHelper.MOD_NAME, version = VersionHelper.VERSION, dependencies = "required-after:FML")
-@Mod(modid = "EasyCrafting", name = "Easy Crafting", version = "@MOD_VERSION@", dependencies = "required-after:Forge@[10.12.1.1090,)", useMetadata = true)
+@Mod(modid = "EasyCrafting", name = "Easy Crafting", version = "@VERSION@", dependencies = "required-after:Forge@[10.12.1.1090,)", useMetadata = true)
 public class ModEasyCrafting {
 
     @Mod.Instance("EasyCrafting")
