@@ -6,7 +6,7 @@
   "mcversion": "${mcversion}",
         "url": "http://mods.lepko.net/",
         "updateUrl": "",
-        "authors": [ "Lepko" ],
+        "authorList": [ "Lepko" ],
         "credits": "Created by Lepko; Idea based on mods by ljdp and Zeldo",
         "logoFile": "",
         "screenshots": [],        
