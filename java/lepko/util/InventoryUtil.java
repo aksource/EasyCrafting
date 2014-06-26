@@ -82,7 +82,7 @@ public class InventoryUtil {
      * @param inventory - inventory to store
      */
     public static List<ItemStack> storeContents(IInventory inventory) {
-        List<ItemStack> copy = new ArrayList<ItemStack>(inventory.getSizeInventory());
+        List<ItemStack> copy = new ArrayList<>(inventory.getSizeInventory());
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             copy.add(i, ItemStack.copyItemStack(inventory.getStackInSlot(i)));
         }
