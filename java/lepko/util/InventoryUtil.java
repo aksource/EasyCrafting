@@ -176,7 +176,7 @@ public class InventoryUtil {
     public static boolean consumeItemForCrafting(IInventory inventory, int inventoryIndex, List<ItemStack> usedIngredients) {
         ItemStack stack = inventory.decrStackSize(inventoryIndex, 1);
         if (stack != null) {
-            if (stack.getItem().hasContainerItem()) {
+            if (stack.getItem().hasContainerItem(stack)) {
                 ItemStack containerStack = stack.getItem().getContainerItem(stack);
                 if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
                     containerStack = null;

@@ -25,11 +25,11 @@ import java.util.*;
 public class RecipeHelper {
 
     private static int lastRecipeListSize = 0;
-    public static List<EasyRecipe> scannedRecipes = new ArrayList<EasyRecipe>();
-    public static List<IRecipe> registeredRecipes = new ArrayList<IRecipe>();
+    public static List<EasyRecipe> scannedRecipes = new ArrayList<>();
+    public static List<IRecipe> registeredRecipes = new ArrayList<>();
 
     public static void checkForNewRecipes() {
-        List<IRecipe> recipes = new ArrayList<IRecipe>();
+        List<IRecipe> recipes = new ArrayList<>();
         @SuppressWarnings({ "rawtypes", "unchecked" })
         List<IRecipe> allRecipes = (ArrayList<IRecipe>)CraftingManager.getInstance().getRecipeList();
         recipes.addAll(allRecipes);
@@ -51,14 +51,17 @@ public class RecipeHelper {
         int size = recipes.size();
         ModCompatibilityHandler.scanRecipes(recipes);
 
-        ArrayList<EasyRecipe> tmp = new ArrayList<EasyRecipe>();
+        ArrayList<EasyRecipe> tmp = new ArrayList<>();
 
         for (IRecipe r : recipes) {
             ArrayList<Object> ingredients = RecipeHelper.getIngredientList(r);
             if (checkValidInOut(ingredients, r.getRecipeOutput())) {
-//                EasyLog.log(String.format("OUT:%s nbt: %b, IN:%s", r.getRecipeOutput().toString(), r.getRecipeOutput().hasTagCompound(), ingredients.toString()));
                 RecipeHelper.registeredRecipes.add(r);
-                tmp.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
+                try {
+                    tmp.add(new EasyRecipe(EasyItemStack.fromItemStack(r.getRecipeOutput()), ingredients));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 EasyLog.log(String.format("Unknown Recipe: %s", r.getClass().getName()));
             }
@@ -90,8 +93,8 @@ public class RecipeHelper {
      * @param recipesToCheck - a list of recipes to be checked
      */
     public static ArrayList<EasyRecipe> getCraftableRecipes(InventoryPlayer inventory, int maxRecursion, List<EasyRecipe> recipesToCheck) {
-        ArrayList<EasyRecipe> tmpCraftable = new ArrayList<EasyRecipe>();
-        ArrayList<EasyRecipe> tmpAll = new ArrayList<EasyRecipe>(recipesToCheck);
+        ArrayList<EasyRecipe> tmpCraftable = new ArrayList<>();
+        ArrayList<EasyRecipe> tmpAll = new ArrayList<>(recipesToCheck);
 
         for (EasyRecipe er : tmpAll) {
             if (canCraft(er, inventory)) {
@@ -168,7 +171,7 @@ public class RecipeHelper {
         InventoryPlayer tmp2 = new InventoryPlayer(inventory.player);
         tmp.copyInventory(inventory);
 
-        List<ItemStack> usedIngredients = new ArrayList<ItemStack>();
+        List<ItemStack> usedIngredients = new ArrayList<>();
 
         int timesCrafted = 0;
         timesLoop: while (timesCrafted < maxTimes) {
@@ -250,7 +253,7 @@ public class RecipeHelper {
      * @param recipesToCheck - a list of recipes to be checked
      */
     private static ArrayList<EasyRecipe> getRecipesForItemFromList(EasyItemStack ingredient, ImmutableList<EasyRecipe> recipesToCheck) {
-        ArrayList<EasyRecipe> returnList = new ArrayList<EasyRecipe>();
+        ArrayList<EasyRecipe> returnList = new ArrayList<>();
         for (EasyRecipe er : recipesToCheck) {
             if (er.getResult().equals(ingredient, true)) {
                 returnList.add(er);
@@ -266,7 +269,7 @@ public class RecipeHelper {
      * @param recipesToCheck - a list of recipes to be checked
      */
     private static ArrayList<EasyRecipe> getRecipesForItemFromList(ArrayList<ItemStack> ingredients, ImmutableList<EasyRecipe> recipesToCheck) {
-        ArrayList<EasyRecipe> returnList = new ArrayList<EasyRecipe>();
+        ArrayList<EasyRecipe> returnList = new ArrayList<>();
         for (ItemStack is : ingredients) {
             returnList.addAll(getRecipesForItemFromList(EasyItemStack.fromItemStack(is), recipesToCheck));
         }
@@ -356,7 +359,7 @@ public class RecipeHelper {
      */
     public static ArrayList<ItemStack> resolveOreAndLiquidDictionaries(String string) {
         if (string.startsWith("liquid$")) {
-            ArrayList<ItemStack> result = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> result = new ArrayList<>();
 
             int separator = string.indexOf(':');
             int id;

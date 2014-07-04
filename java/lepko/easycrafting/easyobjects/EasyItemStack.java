@@ -8,8 +8,10 @@ import java.util.List;
 import lepko.easycrafting.modcompat.ModCompatIC2;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class EasyItemStack {
@@ -62,7 +64,7 @@ public class EasyItemStack {
         ItemStack is = new ItemStack(getItemFromUniqueString(id), size, damage);
         is.setTagCompound(stackTagCompound);
         if (charge > 0) {
-            ModCompatIC2.discharge(is, 0x7fffffff, 0x7fffffff, true, false);
+            ModCompatIC2.discharge(is, 0x7fffffff, 0x7fffffff, true, false, false);
             ModCompatIC2.charge(is, charge, 0x7fffffff, true, false);
         }
         return is;
@@ -74,8 +76,8 @@ public class EasyItemStack {
         return is;
     }
     public static EasyItemStack fromItemStack(ItemStack is) {
-        int charge = ModCompatIC2.discharge(is, 0x7fffffff, 0x7fffffff, true, true);
-        EasyItemStack eis = new EasyItemStack(getUniqueStrings(is.getItem()), is.getItemDamage(), is.stackSize, charge);
+        double charge = ModCompatIC2.discharge(is, 0x7fffffff, 0x7fffffff, true, false, true);
+        EasyItemStack eis = new EasyItemStack(getUniqueStrings(is.getItem()), is.getItemDamage(), is.stackSize, MathHelper.ceiling_double_int(charge));
         eis.stackTagCompound = is.getTagCompound();
         return eis;
     }
@@ -122,7 +124,7 @@ public class EasyItemStack {
 
         if (usedIngredients != null) {
             for (ItemStack ingredient :  usedIngredients) {
-                outputCharge += ModCompatIC2.discharge(ingredient, 0x7fffffff, 0x7fffffff, true, true);
+                outputCharge += ModCompatIC2.discharge(ingredient, 0x7fffffff, 0x7fffffff, true, false, true);
             }
         }
 
@@ -134,10 +136,12 @@ public class EasyItemStack {
     public List<ItemStack> usedIngredients;
     public static String getUniqueStrings(Object obj)
     {
-        GameRegistry.UniqueIdentifier uId;
+        GameRegistry.UniqueIdentifier uId = null;
+        if (obj instanceof ItemBlock) obj = Block.getBlockFromItem((Item)obj);
         if(obj instanceof Block) {
             uId = GameRegistry.findUniqueIdentifierFor((Block) obj);
-        }else {
+        }
+        if (obj instanceof Item) {
             uId = GameRegistry.findUniqueIdentifierFor((Item) obj);
         }
         return (uId == null) ? "" : uId.toString();

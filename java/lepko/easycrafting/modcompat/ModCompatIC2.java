@@ -99,15 +99,16 @@ public class ModCompatIC2 extends ModCompat {
         return ElectricItem.manager;
     }
 
-    public static int charge(ItemStack is, int amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
+    public static double charge(ItemStack is, int amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
         if (!isElectricItemStack(is)) {
             return 0;
         }
 
         // TODO: remove when not supported anymore
-        if (is.getItem() instanceof ICustomElectricItem) {
-            return ((ICustomElectricItem) is.getItem()).charge(is, amount, tier, ignoreTransferLimit, simulate);
-        } else if (!(is.getItem() instanceof ISpecialElectricItem)) {
+//        if (is.getItem() instanceof ICustomElectricItem) {
+//            return ((ICustomElectricItem) is.getItem()).charge(is, amount, tier, ignoreTransferLimit, simulate);
+//        }
+        if (!(is.getItem() instanceof ISpecialElectricItem)) {
             ElectricItem.manager.charge(is, amount, tier, ignoreTransferLimit, simulate);
         }
 
@@ -118,22 +119,23 @@ public class ModCompatIC2 extends ModCompat {
         return manager.charge(is, amount, tier, ignoreTransferLimit, simulate);
     }
 
-    public static int discharge(ItemStack is, int amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
+    public static double discharge(ItemStack is, int amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
         if (!isElectricItemStack(is)) {
             return 0;
         }
 
         // TODO: remove when not supported anymore
-        if (is.getItem() instanceof ICustomElectricItem) {
-            return ((ICustomElectricItem) is.getItem()).discharge(is, amount, tier, ignoreTransferLimit, simulate);
-        } else if (!(is.getItem() instanceof ISpecialElectricItem)) {
-            ElectricItem.manager.discharge(is, amount, tier, ignoreTransferLimit, simulate);
+//        if (is.getItem() instanceof ICustomElectricItem) {
+//            return ((ICustomElectricItem) is.getItem()).discharge(is, amount, tier, ignoreTransferLimit, simulate);
+//        }
+        if (!(is.getItem() instanceof ISpecialElectricItem)) {
+            ElectricItem.manager.discharge(is, amount, tier, ignoreTransferLimit, externally, simulate);
         }
 
         IElectricItemManager manager = getManager(is);
         if (manager == null) {
             return 0;
         }
-        return manager.discharge(is, amount, tier, ignoreTransferLimit, simulate);
+        return manager.discharge(is, amount, tier, ignoreTransferLimit, externally, simulate);
     }
 }
