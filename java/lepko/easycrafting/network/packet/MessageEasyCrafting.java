@@ -2,14 +2,9 @@ package lepko.easycrafting.network.packet;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import lepko.easycrafting.config.ConfigHandler;
 import lepko.easycrafting.easyobjects.EasyItemStack;
 import lepko.easycrafting.easyobjects.EasyRecipe;
-import lepko.easycrafting.helpers.RecipeHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -18,11 +13,11 @@ import java.util.List;
 /**
  * Created by A.K. on 14/06/01.
  */
-public class MessageEasyCrafting implements IMessage, IMessageHandler<MessageEasyCrafting, IMessage> {
+public class MessageEasyCrafting implements IMessage {
 
-    private EasyItemStack result;
-    private ItemStack[] ingredients;
-    private boolean isRightClick = false;
+    public EasyItemStack result;
+    public ItemStack[] ingredients;
+    public boolean isRightClick = false;
 
     public MessageEasyCrafting(){}
 
@@ -84,49 +79,5 @@ public class MessageEasyCrafting implements IMessage, IMessageHandler<MessageEas
                 }
             }
         }
-    }
-
-    @Override
-    public IMessage onMessage(MessageEasyCrafting message, MessageContext ctx) {
-        if (ctx.getServerHandler().playerEntity != null) {
-            EntityPlayer sender = ctx.getServerHandler().playerEntity;
-            EasyRecipe recipe = RecipeHelper.getValidRecipe(message.result, message.ingredients);
-            if (recipe == null) {
-                return null;
-            }
-
-            ItemStack stack_in_hand = sender.inventory.getItemStack();
-            ItemStack return_stack = null;
-            int return_size = 0;
-
-            if (stack_in_hand == null) {
-                return_stack = recipe.getResult().toItemStack();
-                return_size = recipe.getResult().getSize();
-            } else if (recipe.getResult().equalsItemStack(stack_in_hand, true) && stack_in_hand.getMaxStackSize() >= recipe.getResult().getSize() + stack_in_hand.stackSize && EasyItemStack.areStackTagsEqual(recipe.getResult(), stack_in_hand)) {
-                return_stack = recipe.getResult().toItemStack();
-                return_size = recipe.getResult().getSize() + stack_in_hand.stackSize;
-            }
-
-            if (return_stack != null) {
-                if (!message.isRightClick) {
-                    if (RecipeHelper.canCraft(recipe, sender.inventory, RecipeHelper.getAllRecipes(), true, 1, ConfigHandler.MAX_RECURSION) > 0) {
-                        return_stack.stackSize = return_size;
-                        //Test
-                        return_stack.onCrafting(sender.worldObj, sender, 1);
-                        sender.inventory.setItemStack(return_stack);
-                    }
-                } else {
-                    int maxTimes = RecipeHelper.calculateCraftingMultiplierUntilMaxStack(return_stack, stack_in_hand);
-                    int timesCrafted = RecipeHelper.canCraft(recipe, sender.inventory, RecipeHelper.getAllRecipes(), true, maxTimes, ConfigHandler.MAX_RECURSION);
-                    if (timesCrafted > 0) {
-                        return_stack.stackSize = return_size + (timesCrafted - 1) * recipe.getResult().getSize();
-                        //Test
-                        return_stack.onCrafting(sender.worldObj, sender, timesCrafted);
-                        sender.inventory.setItemStack(return_stack);
-                    }
-                }
-            }
-        }
-        return null;
     }
 }
