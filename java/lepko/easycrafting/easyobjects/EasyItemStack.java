@@ -1,10 +1,6 @@
 package lepko.easycrafting.easyobjects;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-//import ic2.api.item.IElectricItem;
-
-import java.util.List;
-
 import lepko.easycrafting.modcompat.ModCompatIC2;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -13,6 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
+
+//import ic2.api.item.IElectricItem;
 
 public class EasyItemStack {
 

@@ -3,7 +3,6 @@ package lepko.easycrafting.helpers;
 import cpw.mods.fml.common.Loader;
 import lepko.easycrafting.ModEasyCrafting;
 import lepko.easycrafting.config.ConfigHandler;
-import lepko.easycrafting.proxy.Proxy;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.io.BufferedReader;

@@ -1,8 +1,6 @@
 package lepko.easycrafting.proxy;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import lepko.easycrafting.handlers.TickHandlerClient;
 import lepko.easycrafting.helpers.EasyLog;
 import net.minecraft.util.ChatComponentTranslation;
 

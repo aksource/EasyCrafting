@@ -1,10 +1,10 @@
 package lepko.easycrafting.easyobjects;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import lepko.easycrafting.helpers.RecipeHelper;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class EasyRecipe {
 

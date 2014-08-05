@@ -1,13 +1,13 @@
 package lepko.easycrafting.modcompat;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import lepko.easycrafting.helpers.EasyLog;
 import lepko.easycrafting.helpers.RecipeHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ModCompatEE3 extends ModCompat {
 

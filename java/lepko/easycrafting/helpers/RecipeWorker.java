@@ -1,19 +1,16 @@
 package lepko.easycrafting.helpers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.concurrent.locks.ReentrantLock;
-
+import com.google.common.collect.ImmutableList;
+import cpw.mods.fml.client.FMLClientHandler;
 import lepko.easycrafting.ModEasyCrafting;
 import lepko.easycrafting.config.ConfigHandler;
 import lepko.easycrafting.easyobjects.EasyRecipe;
 import lepko.easycrafting.helpers.RecipeHelper.RecipeComparator;
-import lepko.easycrafting.proxy.Proxy;
 import net.minecraft.entity.player.InventoryPlayer;
 
-import com.google.common.collect.ImmutableList;
-
-import cpw.mods.fml.client.FMLClientHandler;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class RecipeWorker implements Runnable {
 

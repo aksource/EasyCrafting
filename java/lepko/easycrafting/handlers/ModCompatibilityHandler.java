@@ -1,15 +1,14 @@
 package lepko.easycrafting.handlers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import lepko.easycrafting.helpers.EasyLog;
 import lepko.easycrafting.modcompat.ModCompat;
 import lepko.easycrafting.modcompat.ModCompatCS2;
-import lepko.easycrafting.modcompat.ModCompatEE3;
 import lepko.easycrafting.modcompat.ModCompatIC2;
 import net.minecraft.item.crafting.IRecipe;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ModCompatibilityHandler {
 

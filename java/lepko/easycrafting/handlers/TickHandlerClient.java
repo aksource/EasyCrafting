@@ -1,14 +1,12 @@
 package lepko.easycrafting.handlers;
 
-import java.util.EnumSet;
-
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import lepko.easycrafting.helpers.RecipeWorker;
 import lepko.easycrafting.helpers.VersionHelper;
 import lepko.easycrafting.inventory.gui.GuiEasyCrafting;
 import net.minecraft.client.Minecraft;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class TickHandlerClient {
 

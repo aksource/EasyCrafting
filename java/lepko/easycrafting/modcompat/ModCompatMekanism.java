@@ -1,16 +1,16 @@
 package lepko.easycrafting.modcompat;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import lepko.easycrafting.easyobjects.EasyItemStack;
 import lepko.easycrafting.easyobjects.EasyRecipe;
 import lepko.easycrafting.helpers.EasyLog;
 import lepko.easycrafting.helpers.RecipeHelper;
 import net.minecraft.item.crafting.IRecipe;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class ModCompatMekanism extends ModCompat {
 

@@ -1,7 +1,6 @@
 package lepko.easycrafting.proxy;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.relauncher.Side;
 import lepko.easycrafting.helpers.EasyLog;
 

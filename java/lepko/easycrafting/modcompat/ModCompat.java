@@ -1,11 +1,11 @@
 package lepko.easycrafting.modcompat;
 
-import java.util.List;
-
+import cpw.mods.fml.common.Loader;
 import lepko.easycrafting.handlers.ModCompatibilityHandler;
 import lepko.easycrafting.helpers.EasyLog;
 import net.minecraft.item.crafting.IRecipe;
-import cpw.mods.fml.common.Loader;
+
+import java.util.List;
 
 public abstract class ModCompat {
 
